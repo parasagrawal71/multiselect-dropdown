@@ -1,25 +1,74 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useRef } from "react";
+import "./App.css";
 
-function App() {
+// IMPORT COMPONENTS HERE
+import Checkbox from "./components/checkbox/Checkbox";
+
+const App = () => {
+  // STATE VARIABLES
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // VARIABLES
+  const users = ["Jenny Hess", "Elliot Fu", "Stevie Feliciano", "Christian"];
+
+  // Refs
+  const dropdownRef = useRef(null);
+
+  const addRemoveUser = (e, selectedUser) => {
+    e.stopPropagation(); // To stop event bubbling and avoid closing dropdown
+    if (selectedUsers.includes(selectedUser)) {
+      setSelectedUsers([...selectedUsers.filter((u) => u !== selectedUser)]);
+    } else {
+      setSelectedUsers([...selectedUsers, selectedUser]);
+    }
+  };
+
+  const handleOutsideClick = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setIsVisible(false);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="container" onClick={handleOutsideClick}>
+      <section className="multiselect" onClick={() => setIsVisible(!isVisible)}>
+        <div>Select users</div>
+        <div className="dropdown-icon"></div>
+        {isVisible && (
+          <section className="dropdown" ref={dropdownRef}>
+            {users.map((user, index) => {
+              return (
+                <div
+                  key={user + index}
+                  className="dropdown-item"
+                  onClick={(e) => addRemoveUser(e, user)}
+                >
+                  {user}
+                  {selectedUsers.includes(user) && <Checkbox />}
+                </div>
+              );
+            })}
+          </section>
+        )}
+      </section>
+      <section className="selected-users">
+        {selectedUsers &&
+          selectedUsers.map((selectedUser, index) => {
+            return (
+              <div
+                key={selectedUser + index}
+                className="selected-user"
+                onClick={(e) => addRemoveUser(e, selectedUser)}
+              >
+                {selectedUser}
+                <span className="cross">x</span>
+              </div>
+            );
+          })}
+      </section>
+    </main>
   );
-}
+};
 
 export default App;
