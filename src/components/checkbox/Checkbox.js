@@ -3,9 +3,9 @@ import "./Checkbox.css";
 
 const Checkbox = () => {
   return (
-    <span className="checkbox">
+    <div className="checkbox">
       <span className="checkmark"></span>
-    </span>
+    </div>
   );
 };
 

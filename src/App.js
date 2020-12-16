@@ -10,7 +10,16 @@ const App = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // VARIABLES
-  const users = ["Jenny Hess", "Elliot Fu", "Stevie Feliciano", "Christian"];
+  const users = [
+    "Jenny Hess",
+    "Elliot Fu",
+    "Stevie Feliciano",
+    "Christian",
+    "Jenny H",
+    "Elliot A",
+    "Stevie S",
+    "Christian C",
+  ];
 
   // Refs
   const dropdownRef = useRef(null);
@@ -56,13 +65,14 @@ const App = () => {
         {selectedUsers &&
           selectedUsers.map((selectedUser, index) => {
             return (
-              <div
-                key={selectedUser + index}
-                className="selected-user"
-                onClick={(e) => addRemoveUser(e, selectedUser)}
-              >
+              <div key={selectedUser + index} className="selected-user">
                 {selectedUser}
-                <span className="cross">x</span>
+                <span
+                  className="cross"
+                  onClick={(e) => addRemoveUser(e, selectedUser)}
+                >
+                  x
+                </span>
               </div>
             );
           })}
